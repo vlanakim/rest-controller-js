@@ -13,5 +13,9 @@
 </ul>
 <p><a th:href="@{/logout}">Выйти</a></p>
 
+<form th:action="@{/logout}" method="post">
+    <button type="submit">Выйти</button>
+</form>
+
 </body>
 </html>
