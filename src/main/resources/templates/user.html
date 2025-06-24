@@ -1,21 +1,86 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Профиль пользователя</title>
+    <meta charset="UTF-8">
+    <title>User panel</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .sidebar {
+            height: 100vh;
+            background-color: #f8f9fa;
+            border-right: 1px solid #dee2e6;
+        }
+        .sidebar .nav-link.active {
+            background-color: #0d6efd;
+            color: white;
+        }
+    </style>
 </head>
 <body>
 
-<h1>Добро пожаловать, <span th:text="${#authentication.name}">пользователь</span>!</h1>
-<h2>Ваши роли:</h2>
-<ul>
-    <li th:each="auth : ${#authentication.authorities}"
-        th:text="${auth.authority}"></li>
-</ul>
-<p><a th:href="@{/logout}">Выйти</a></p>
+<!-- Navbar -->
+<nav class="navbar navbar-dark bg-dark px-3">
+    <span class="navbar-text text-white" th:text="${user.email} + ' with roles ' + ${user.roles}">user@user with roles [USER]</span>
+    <form th:action="@{/logout}" method="post">
+        <button class="btn btn-outline-light">Logout</button>
+    </form>
+</nav>
 
-<form th:action="@{/logout}" method="post">
-    <button type="submit">Выйти</button>
-</form>
+<div class="container-fluid">
+    <div class="row">
+
+        <!-- Sidebar -->
+        <div class="col-md-2 sidebar p-0">
+            <ul class="nav flex-column mt-3">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">User</a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Main content -->
+        <div class="col-md-10 p-4">
+            <h2 class="mb-4">User panel</h2>
+
+            <!-- User Info Card -->
+            <div class="card">
+                <div class="card-header bg-light">
+                    <strong>About User</strong>
+                </div>
+                <div class="card-body p-0">
+                    <table class="table table-bordered table-hover mb-0 bg-white">
+                        <thead class="table-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Age</th>
+                            <th>Email</th>
+                            <th>Roles</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td th:text="${user.id}">2</td>
+                            <td th:text="${user.firstName}">User</td>
+                            <td th:text="${user.lastName}">User</td>
+                            <td th:text="${user.age}">38</td>
+                            <td th:text="${user.email}">user@user</td>
+                            <td>
+                                <span th:each="role : ${user.roles}" th:text="${role.name}" class="badge bg-secondary me-1">USER</span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
 
 </body>
 </html>
