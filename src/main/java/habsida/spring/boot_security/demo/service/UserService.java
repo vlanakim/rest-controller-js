@@ -1,5 +1,6 @@
 package habsida.spring.boot_security.demo.service;
 
+import habsida.spring.boot_security.demo.dto.PasswordChangeRequest;
 import habsida.spring.boot_security.demo.model.Role;
 import habsida.spring.boot_security.demo.model.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,5 +15,6 @@ public interface UserService extends UserDetailsService {
     User getUser(Long id);
     void deleteUser(Long id);
     void updateUser(User user);
+    void changePassword(String currentUsername, PasswordChangeRequest request);
 }
 

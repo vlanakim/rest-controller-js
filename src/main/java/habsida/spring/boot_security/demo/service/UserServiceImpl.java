@@ -1,5 +1,6 @@
 package habsida.spring.boot_security.demo.service;
 
+import habsida.spring.boot_security.demo.dto.PasswordChangeRequest;
 import habsida.spring.boot_security.demo.model.Role;
 import habsida.spring.boot_security.demo.model.User;
 import habsida.spring.boot_security.demo.repository.RoleRepository;
@@ -111,6 +112,23 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             user.setRoles(Set.of(roleUser));
             userRepository.save(user);
         }
+    }
+
+    @Transactional
+    public void changePassword(String currentUsername, PasswordChangeRequest request) {
+        User user = userRepository.findByEmail(currentUsername)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        if (!passwordEncoder.matches(request.getOldPassword(), user.getPassword())) {
+            throw new IllegalArgumentException("Current password is incorrect");
+        }
+
+        if (request.getNewPassword().equals(request.getOldPassword())) {
+            throw new IllegalArgumentException("New password must be different");
+        }
+
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        userRepository.save(user);
     }
 
 }
